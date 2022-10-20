@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LostArkAuctionHelper", "LostArkAuctionHelper\LostArkAuctionHelper.csproj", "{4717D1B0-2154-4A10-8573-E72EB23993EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4717D1B0-2154-4A10-8573-E72EB23993EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4717D1B0-2154-4A10-8573-E72EB23993EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4717D1B0-2154-4A10-8573-E72EB23993EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4717D1B0-2154-4A10-8573-E72EB23993EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B0874E5-D655-444F-84DE-3D1F958348CD}
+	EndGlobalSection
+EndGlobal

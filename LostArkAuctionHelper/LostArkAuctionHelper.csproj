@@ -5,11 +5,16 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>gold.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\gold.png" />
     <None Remove="Resources\M Ying Hei PRC W48 W3.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="gold.ico" />
   </ItemGroup>
 
   <ItemGroup>

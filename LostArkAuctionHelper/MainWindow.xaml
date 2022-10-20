@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LostArkAuctionHelper"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="Lost Ark Auction Helper"
         FontFamily="Resources/#M Ying Hei PRC W48 W3"
         FontSize="30"
         Height="300" Width="500"
@@ -40,6 +40,7 @@
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="0 3 3 0"/>
+                <Setter Property="IsTabStop" Value="False"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">

@@ -78,7 +78,7 @@ namespace LostArkAuctionHelper
 
       var equalCutPrice = perPlayer * (partySize - 1);
 
-      var equalCutBidBefore = (equalCutPrice / 110d) * 100d;
+      var equalCutBidBefore = equalCutPrice / 1.1;
 
       var bidAmount = equalCutPrice - equalCutBidBefore;
 

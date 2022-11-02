@@ -14,6 +14,30 @@ namespace LostArkAuctionHelper
   {
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    private bool _isEqualShare;
+
+    public bool IsEqualShare
+    {
+      get { return _isEqualShare; }
+      set
+      {
+        _isEqualShare = value;
+        TryCalculate();
+      }
+    }
+
+    private string _bias;
+
+    public string Bias
+    {
+      get { return _bias; }
+      set
+      {
+        _bias = value;
+        TryCalculate();
+      }
+    }
+
     private string _lowestPrice;
 
     public string LowestPrice
@@ -53,6 +77,8 @@ namespace LostArkAuctionHelper
     public MainWindow()
     {
       DataContext = this;
+      _bias = "25";
+      _isEqualShare = false;
       _lowestPrice = "50";
       _partySize = "4";
       _endPrice = "0";
@@ -67,7 +93,9 @@ namespace LostArkAuctionHelper
         return;
       }
 
-      if (!_lowestPrice.TryParseInt(out var price) || !_partySize.TryParseInt(out var partySize))
+      if (!_lowestPrice.TryParseInt(out var price)
+        || !_partySize.TryParseInt(out var partySize)
+        || !_bias.TryParseInt(out var bias))
       {
         return;
       }
@@ -78,11 +106,18 @@ namespace LostArkAuctionHelper
 
       var equalCutPrice = perPlayer * (partySize - 1);
 
-      var equalCutBidBefore = equalCutPrice / 1.1;
+      if (_isEqualShare)
+      {
+        EndPrice = Math.Round(equalCutPrice).ToString();
+      }
+      else
+      {
+        var equalCutBidBefore = equalCutPrice / 1.1;
 
-      var bidAmount = equalCutPrice - equalCutBidBefore;
+        var bidAmount = equalCutPrice - equalCutBidBefore;
 
-      EndPrice = Math.Round(equalCutBidBefore + (bidAmount * 0.25)).ToString();
+        EndPrice = Math.Round(equalCutBidBefore + (bidAmount * (bias / 100d))).ToString();
+      }
     }
 
     private void TextBox_KeyDown(object sender, KeyEventArgs e)
@@ -108,6 +143,6 @@ namespace LostArkAuctionHelper
     private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(EndPrice ?? string.Empty);
 
     private void Button_Click(object sender, RoutedEventArgs e) => Close();
-    
+
   }
 }

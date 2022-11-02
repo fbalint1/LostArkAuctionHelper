@@ -44,6 +44,7 @@
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="0 3 3 0"/>
                 <Setter Property="IsTabStop" Value="False"/>
+                <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -53,6 +54,49 @@
                                     Background="{TemplateBinding Background}">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
+                <Setter Property="Background" Value="{StaticResource DarkPurpleBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    Width="15" Height="15">
+                                    <Path Stretch="Uniform"
+                                                      Width="15" Height="10" 
+                                                      Fill="{StaticResource GoldBrush}"
+                                                      Name="eliCheck"
+                                                      Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
+                                                      Visibility="Collapsed"/>
+                                </Border>
+                                <TextBlock Margin="5 0 0 0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{TemplateBinding Foreground}"
+                                                       Text="{TemplateBinding Content}"/>
+                            </StackPanel>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="eliCheck" Property="Visibility" Value="Visible"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -71,7 +115,49 @@
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="4*"/>
+                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="1" 
+                   Content="Bias" 
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Foreground="{StaticResource GoldBrush}"/>
+            <StackPanel Grid.Column="1" Grid.Row="1"
+                        Orientation="Horizontal">
+                <TextBox Grid.Column="1" Grid.Row="2"
+                         Width="100"
+                         Text="{Binding Bias, UpdateSourceTrigger=PropertyChanged}"
+                         KeyDown="TextBox_KeyDown"
+                         TabIndex="3">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="7"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <Label Margin="5 0 0 0"
+                   Content="Equal share" 
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Foreground="{StaticResource GoldBrush}"/>
+                <CheckBox VerticalAlignment="Center"
+                          Margin="5 0 0 0"
+                          Background="{StaticResource DarkPurpleBrush}"
+                          BorderBrush="{StaticResource GoldBrush}"
+                          Style="{StaticResource CheckBoxStyle}"
+                          IsChecked="{Binding IsEqualShare}"
+                          TabIndex="4">
+                    <CheckBox.LayoutTransform>
+                        <ScaleTransform ScaleX="2" ScaleY="2" />
+                    </CheckBox.LayoutTransform>
+                    <CheckBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                    </CheckBox.Resources>
+                </CheckBox>
+            </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                         Orientation="Horizontal"
@@ -84,7 +170,7 @@
                        VerticalAlignment="Center"
                        Foreground="{StaticResource GoldBrush}"/>
             </StackPanel>
-            
+
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                         Orientation="Horizontal" 
                         HorizontalAlignment="Right" 
@@ -93,13 +179,13 @@
                         Click="Button_Click"/>
             </StackPanel>
 
-            <Label Grid.Column="0" Grid.Row="1" 
+            <Label Grid.Column="0" Grid.Row="2" 
                    Content="Lowest price" 
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"
                    Foreground="{StaticResource GoldBrush}"/>
             <TextBox x:Name="PriceTextBox"
-                     Grid.Column="1" Grid.Row="1"
+                     Grid.Column="1" Grid.Row="2"
                      Text="{Binding LowestPrice, UpdateSourceTrigger=PropertyChanged}"
                      KeyDown="TextBox_KeyDown"
                      GotFocus="PriceTextBox_GotFocus"
@@ -111,12 +197,12 @@
                 </TextBox.Resources>
             </TextBox>
 
-            <Label Grid.Column="0" Grid.Row="2" 
+            <Label Grid.Column="0" Grid.Row="3" 
                    Content="Party size" 
                    Foreground="{StaticResource GoldBrush}"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="2"
+            <TextBox Grid.Column="1" Grid.Row="3"
                      Text="{Binding PartySize, UpdateSourceTrigger=PropertyChanged}"
                      KeyDown="TextBox_KeyDown"
                      GotFocus="PriceTextBox_GotFocus"
@@ -129,12 +215,12 @@
             </TextBox>
 
 
-            <Label Grid.Column="0" Grid.Row="3" 
+            <Label Grid.Column="0" Grid.Row="4" 
                    Content="Best bid" 
                    Foreground="{StaticResource GoldBrush}"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"/>
-            <StackPanel Grid.Column="1" Grid.Row="3"
+            <StackPanel Grid.Column="1" Grid.Row="4"
                         Orientation="Horizontal"
                         VerticalAlignment="Center" HorizontalAlignment="Center"
                         MouseLeftButtonDown="StackPanel_MouseLeftButtonDown">

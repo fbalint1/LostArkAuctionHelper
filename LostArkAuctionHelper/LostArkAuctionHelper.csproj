@@ -11,6 +11,8 @@
   <ItemGroup>
     <None Remove="Resources\gold.png" />
     <None Remove="Resources\M Ying Hei PRC W48 W3.ttf" />
+    <None Remove="Resources\M Ying Hei PRC W48 W5.ttf" />
+    <None Remove="Resources\M Ying Hei PRC W48 W7.ttf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +25,8 @@
 
   <ItemGroup>
     <Resource Include="Resources\M Ying Hei PRC W48 W3.ttf" />
+    <Resource Include="Resources\M Ying Hei PRC W48 W5.ttf" />
+    <Resource Include="Resources\M Ying Hei PRC W48 W7.ttf" />
   </ItemGroup>
 
 </Project>

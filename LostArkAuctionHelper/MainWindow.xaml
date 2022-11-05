@@ -36,10 +36,12 @@
                 <Setter Property="Width" Value="30"/>
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Foreground" Value="{StaticResource GoldBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="BorderBrush" Value="{StaticResource GoldBrush}"/>
                 <Setter Property="Content" Value="X"/>
                 <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontWeight" Value="ExtraBold"/>
+                <Setter Property="FontFamily" Value="Calibri"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="0 3 3 0"/>
@@ -118,6 +120,27 @@
                 <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
 
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <Label Content="Auction helper"
+                       FontSize="20"
+                       FontFamily="Resources/#M Ying Hei PRC W48 W5"
+                       Margin="0 5 0 0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="{StaticResource GoldBrush}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center">
+                <Button Style="{StaticResource CloseButton}"
+                        Click="Button_Click"/>
+            </StackPanel>
+
             <Label Grid.Column="0" Grid.Row="1" 
                    Content="Bias" 
                    HorizontalAlignment="Right"
@@ -157,26 +180,6 @@
                         </Style>
                     </CheckBox.Resources>
                 </CheckBox>
-            </StackPanel>
-
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                <Label Content="Auction helper"
-                       FontSize="20"
-                       Margin="0 5 0 0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Foreground="{StaticResource GoldBrush}"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                        Orientation="Horizontal" 
-                        HorizontalAlignment="Right" 
-                        VerticalAlignment="Center">
-                <Button Style="{StaticResource CloseButton}"
-                        Click="Button_Click"/>
             </StackPanel>
 
             <Label Grid.Column="0" Grid.Row="2" 

@@ -24,10 +24,10 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet publish --no-restore --configuration Release
       
     - name: Zip output
-      run: zip -r ${{ github.event.repository.name }}.zip ./LostArkAuctionHelper/bin/Release/net6.0-windows/*
+      run: zip -r ${{ github.event.repository.name }}.zip /LostArkAuctionHelper/bin/Release/net6.0-windows/*
 
     - name: Create release
       uses: marvinpinto/action-automatic-releases@v1.2.1

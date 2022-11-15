@@ -24,7 +24,7 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish --no-restore --configuration Release
+      run: dotnet publish --no-restore --configuration Release -r win10-x64
       
     - name: Zip output
       run: zip -r ${{ github.event.repository.name }}.zip ./LostArkAuctionHelper/bin/Release/net6.0-windows/win10-x64/LostArkAuctionHelper*

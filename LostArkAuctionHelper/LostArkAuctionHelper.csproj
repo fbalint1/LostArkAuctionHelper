@@ -18,17 +18,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="gold.ico" />
+    <Content Include="gold.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\gold.png" />
+    <Resource Include="Resources\gold.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\M Ying Hei PRC W48 W3.ttf" />
-    <Resource Include="Resources\M Ying Hei PRC W48 W5.ttf" />
-    <Resource Include="Resources\M Ying Hei PRC W48 W7.ttf" />
+    <Resource Include="Resources\M Ying Hei PRC W48 W3.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\M Ying Hei PRC W48 W5.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\M Ying Hei PRC W48 W7.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

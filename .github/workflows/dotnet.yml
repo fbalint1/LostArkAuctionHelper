@@ -24,10 +24,11 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
+      run: dotnet publish -c Release -r win10-x64 --self-contained -p:PublishSingleFile=true -o ./LostArkAuctionHelper/bin/dist
 
     - name: Zip output
-      run: zip -r ${{ github.event.repository.name }}.zip ./LostArkAuctionHelper/bin/Release/net6.0-windows/win-x64/publish
+      run: zip -r ${{ github.event.repository.name }}.zip
+      working-directory: ./LostArkAuctionHelper/bin/dist
 
     - name: Create release
       uses: marvinpinto/action-automatic-releases@v1.2.1

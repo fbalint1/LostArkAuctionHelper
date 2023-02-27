@@ -107,7 +107,7 @@
     </Window.Resources>
     <Border Background="{StaticResource LightPurpleBrush}" CornerRadius="10">
         <Grid Background="Transparent"
-              MouseDown="Grid_MouseDown">
+              MouseLeftButtonDown="Grid_MouseDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="7*"/>

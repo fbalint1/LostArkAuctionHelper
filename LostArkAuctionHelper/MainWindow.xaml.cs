@@ -12,7 +12,7 @@ namespace LostArkAuctionHelper
   /// </summary>
   public partial class MainWindow : Window, INotifyPropertyChanged
   {
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     private bool _isEqualShare;
 

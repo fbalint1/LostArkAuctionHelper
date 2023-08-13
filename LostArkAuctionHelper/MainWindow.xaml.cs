@@ -1,9 +1,12 @@
 ﻿using LostArkAuctionHelper.Helpers;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace LostArkAuctionHelper
 {
@@ -86,6 +89,32 @@ namespace LostArkAuctionHelper
       InitializeComponent();
     }
 
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+      base.OnSourceInitialized(e);
+      var hwndSource = PresentationSource.FromVisual(this) as HwndSource;
+      hwndSource.AddHook(WndProc);
+    }
+
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lparam, ref bool handled)
+    {
+      if (msg == ApplicationEntryPoint.WM_SHOWME)
+      {
+        if (WindowState == WindowState.Minimized)
+        {
+          WindowState = WindowState.Normal;
+        }
+        else
+        {
+          Topmost = true;
+          Keyboard.Focus(PriceTextBox);
+          Topmost = false;
+        }
+      }
+
+      return IntPtr.Zero;
+    }
+
     private void TryCalculate()
     {
       if (string.IsNullOrEmpty(_lowestPrice) || string.IsNullOrEmpty(PartySize))
@@ -143,6 +172,5 @@ namespace LostArkAuctionHelper
     private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(EndPrice ?? string.Empty);
 
     private void Button_Click(object sender, RoutedEventArgs e) => Close();
-
   }
 }

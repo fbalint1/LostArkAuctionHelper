@@ -9,7 +9,8 @@ namespace LostArkAuctionHelper
     private const int HWND_BROADCAST = 0xffff;
 
     public static readonly int WM_SHOWME = RegisterWindowMessage("LOST_ARK_AUCTION_HELPER_WINDOWSHOW");
-    private static Mutex _mutex = new Mutex(true, "LOST_ARK_AUCTION_HELPER_MUTEX");
+    
+    private static readonly Mutex _mutex = new Mutex(true, "LOST_ARK_AUCTION_HELPER_MUTEX");
 
     [STAThread]
     public static void Main(string[] args)

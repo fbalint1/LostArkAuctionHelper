@@ -61,7 +61,11 @@ namespace LostArkAuctionHelper
       set
       {
         _partySize = value;
-        TryCalculate();
+        if (int.TryParse(_partySize, out var parsedSize))
+        {
+          _activePartySize = parsedSize;
+          TryCalculate();
+        }
       }
     }
 
@@ -77,16 +81,33 @@ namespace LostArkAuctionHelper
       }
     }
 
+    private int _activePartySize;
+    private int _activePartyOption;
+
+    public int ActivePartyOption
+    {
+      get { return _activePartyOption; }
+      set
+      {
+        _activePartyOption = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActivePartyOption)));
+      }
+    }
+
     public MainWindow()
     {
-      DataContext = this;
       _bias = "25";
       _isEqualShare = false;
       _lowestPrice = "50";
-      _partySize = "4";
+      _partySize = "10";
       _endPrice = "0";
+      _activePartySize = 4;
+      _activePartyOption = 0;
 
+      DataContext = this;
       InitializeComponent();
+
+      TryCalculate();
     }
 
     protected override void OnSourceInitialized(EventArgs e)
@@ -123,7 +144,6 @@ namespace LostArkAuctionHelper
       }
 
       if (!_lowestPrice.TryParseInt(out var price)
-        || !_partySize.TryParseInt(out var partySize)
         || !_bias.TryParseInt(out var bias))
       {
         return;
@@ -131,9 +151,9 @@ namespace LostArkAuctionHelper
 
       var actualItemValue = price * .95;
 
-      var perPlayer = actualItemValue / partySize;
+      var perPlayer = actualItemValue / _activePartySize;
 
-      var equalCutPrice = perPlayer * (partySize - 1);
+      var equalCutPrice = perPlayer * (_activePartySize - 1);
 
       if (_isEqualShare)
       {
@@ -157,6 +177,11 @@ namespace LostArkAuctionHelper
       {
         e.Handled = true;
       }
+      else
+      {
+        ActivePartyOption = 2;
+        TryCalculate();
+      }
     }
 
     private void PriceTextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -172,5 +197,33 @@ namespace LostArkAuctionHelper
     private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(EndPrice ?? string.Empty);
 
     private void Button_Click(object sender, RoutedEventArgs e) => Close();
+
+    private void Button_Click_0(object sender, RoutedEventArgs e)
+    {
+      ActivePartyOption = 0;
+      _activePartySize = 4;
+      TryCalculate();
+    }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+      ActivePartyOption = 1;
+      _activePartySize = 8;
+      TryCalculate();
+    }
+
+    private void PartySizeTextBox_GotFocus(object sender, RoutedEventArgs e)
+    {
+      if (sender is TextBox textBox)
+      {
+        textBox.SelectAll();
+        if (int.TryParse(_partySize, out var parsedSize))
+        {
+          _activePartySize = parsedSize;
+          ActivePartyOption = 2;
+          TryCalculate();
+        }
+      }
+    }
   }
 }

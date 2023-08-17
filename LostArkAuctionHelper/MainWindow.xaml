@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LostArkAuctionHelper"
+        xmlns:helpers="clr-namespace:LostArkAuctionHelper.Helpers"
         mc:Ignorable="d"
         Title="Lost Ark Auction Helper"
         FontFamily="Resources/#M Ying Hei PRC W48 W3"
@@ -20,7 +21,13 @@
             <SolidColorBrush x:Key="LightPurpleBrush" Color="#48426D"/>
             <SolidColorBrush x:Key="GoldBrush" Color="#F0C38E"/>
             <SolidColorBrush x:Key="SkinBrush" Color="#F1AA9B"/>
-            <Style TargetType="{x:Type TextBox}">
+
+            <helpers:PartyOptionBackgroundConverter x:Key="PartyOptionBackgroundConverterButton" ActiveColor="{StaticResource GoldBrush}" InactiveColor="{StaticResource LightPurpleBrush}"/>
+            <helpers:PartyOptionBackgroundConverter x:Key="PartyOptionBackgroundConverterTextbox" ActiveColor="{StaticResource GoldBrush}" InactiveColor="{StaticResource DarkPurpleBrush}"/>
+            <helpers:PartyOptionToForegroundConverter x:Key="PartyOptionToForegroundConverter"/>
+            <helpers:PartyOptionToBorderThicknessConverter x:Key="PartyOptionToBorderThicknessConverterHide" ActiveValue="0" InactiveValue="2"/>
+            
+            <Style x:Key="DefaultTextBoxStyle" TargetType="{x:Type TextBox}">
                 <Setter Property="Background" Value="{StaticResource DarkPurpleBrush}"/>
                 <Setter Property="Foreground" Value="{StaticResource GoldBrush}"/>
                 <Setter Property="BorderThickness" Value="0"/>
@@ -103,6 +110,51 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="PartySizeButton" TargetType="{x:Type Button}">
+                <Setter Property="BorderBrush" Value="{StaticResource GoldBrush}"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Background" Value="Yellow"/>
+                <Setter Property="Margin" Value="2 7 2 7"/>
+                <Setter Property="Foreground" Value="{StaticResource GoldBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="7">
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="PartySizeTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource DefaultTextBoxStyle}">
+                <Setter Property="Margin" Value="2 7 2 7"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="Border" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="7"
+                                    SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="Border" Value="{StaticResource GoldBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="Border" Value="{StaticResource GoldBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Border Background="{StaticResource LightPurpleBrush}" CornerRadius="10">
@@ -150,6 +202,7 @@
                         Orientation="Horizontal">
                 <TextBox Grid.Column="1" Grid.Row="2"
                          Width="100"
+                         Style="{StaticResource DefaultTextBoxStyle}"
                          Text="{Binding Bias, UpdateSourceTrigger=PropertyChanged}"
                          KeyDown="TextBox_KeyDown"
                          TabIndex="3">
@@ -189,6 +242,7 @@
                    Foreground="{StaticResource GoldBrush}"/>
             <TextBox x:Name="PriceTextBox"
                      Grid.Column="1" Grid.Row="2"
+                     Style="{StaticResource DefaultTextBoxStyle}"
                      Text="{Binding LowestPrice, UpdateSourceTrigger=PropertyChanged}"
                      KeyDown="TextBox_KeyDown"
                      GotFocus="PriceTextBox_GotFocus"
@@ -205,18 +259,37 @@
                    Foreground="{StaticResource GoldBrush}"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="3"
-                     Text="{Binding PartySize, UpdateSourceTrigger=PropertyChanged}"
-                     KeyDown="TextBox_KeyDown"
-                     GotFocus="PriceTextBox_GotFocus"
-                     TabIndex="2">
-                <TextBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="7"/>
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
+            <Grid Grid.Column="1" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
 
+                <Button Content="4"
+                        Style="{StaticResource PartySizeButton}"
+                        BorderThickness="{Binding ActivePartyOption, Converter={StaticResource PartyOptionToBorderThicknessConverterHide}, ConverterParameter=0}"
+                        Background="{Binding ActivePartyOption, Converter={StaticResource PartyOptionBackgroundConverterButton}, ConverterParameter=0}"
+                        Foreground="{Binding ActivePartyOption, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=0}"
+                        Click="Button_Click_0"/>
+
+                <Button Grid.Column="1"
+                        Content="8"
+                        Style="{StaticResource PartySizeButton}"
+                        BorderThickness="{Binding ActivePartyOption, Converter={StaticResource PartyOptionToBorderThicknessConverterHide}, ConverterParameter=1}"
+                        Background="{Binding ActivePartyOption, Converter={StaticResource PartyOptionBackgroundConverterButton}, ConverterParameter=1}"
+                        Foreground="{Binding ActivePartyOption, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=1}"
+                        Click="Button_Click_1"/>
+
+                <TextBox Grid.Column="2"
+                         Style="{StaticResource PartySizeTextBox}"
+                         Text="{Binding PartySize, UpdateSourceTrigger=PropertyChanged}"
+                         Background="{Binding ActivePartyOption, Converter={StaticResource PartyOptionBackgroundConverterTextbox}, ConverterParameter=2}"
+                         Foreground="{Binding ActivePartyOption, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=2}"
+                         KeyDown="TextBox_KeyDown"
+                         GotFocus="PartySizeTextBox_GotFocus"
+                         TabIndex="2"/>
+            </Grid>
 
             <Label Grid.Column="0" Grid.Row="4" 
                    Content="Best bid" 
@@ -226,7 +299,9 @@
             <StackPanel Grid.Column="1" Grid.Row="4"
                         Orientation="Horizontal"
                         VerticalAlignment="Center" HorizontalAlignment="Center"
-                        MouseLeftButtonDown="StackPanel_MouseLeftButtonDown">
+                        MouseLeftButtonDown="StackPanel_MouseLeftButtonDown"
+                        ToolTip="Click the text to copy it to the clipboard"
+                        ToolTipService.InitialShowDelay="200">
                 <Label HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Foreground="{StaticResource GoldBrush}"

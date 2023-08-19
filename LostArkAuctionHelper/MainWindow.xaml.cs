@@ -177,11 +177,6 @@ namespace LostArkAuctionHelper
       {
         e.Handled = true;
       }
-      else
-      {
-        ActivePartyOption = 2;
-        TryCalculate();
-      }
     }
 
     private void PriceTextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -223,6 +218,20 @@ namespace LostArkAuctionHelper
           ActivePartyOption = 2;
           TryCalculate();
         }
+      }
+    }
+
+    private void TextBox_KeyDown_1(object sender, KeyEventArgs e)
+    {
+      var keyCode = (int)e.Key;
+
+      if (!(keyCode >= 34 && keyCode <= 43) && !(keyCode >= 74 && keyCode <= 83) && keyCode != 3)
+      {
+        e.Handled = true;
+      }
+      else
+      {
+        ActivePartyOption = 2;
       }
     }
   }

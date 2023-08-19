@@ -286,7 +286,7 @@
                          Text="{Binding PartySize, UpdateSourceTrigger=PropertyChanged}"
                          Background="{Binding ActivePartyOption, Converter={StaticResource PartyOptionBackgroundConverterTextbox}, ConverterParameter=2}"
                          Foreground="{Binding ActivePartyOption, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=2}"
-                         KeyDown="TextBox_KeyDown"
+                         KeyDown="TextBox_KeyDown_1"
                          GotFocus="PartySizeTextBox_GotFocus"
                          TabIndex="2"/>
             </Grid>

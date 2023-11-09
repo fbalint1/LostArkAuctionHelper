@@ -17,6 +17,8 @@ namespace LostArkAuctionHelper
   {
     public event PropertyChangedEventHandler PropertyChanged;
 
+    public ICommand BiasCommand { get; private set; }
+
     private bool _isEqualShare;
 
     public bool IsEqualShare
@@ -29,14 +31,15 @@ namespace LostArkAuctionHelper
       }
     }
 
-    private string _bias;
+    private int _bias;
 
-    public string Bias
+    public int Bias
     {
       get { return _bias; }
       set
       {
         _bias = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Bias)));
         TryCalculate();
       }
     }
@@ -96,7 +99,7 @@ namespace LostArkAuctionHelper
 
     public MainWindow()
     {
-      _bias = "25";
+      _bias = 75;
       _isEqualShare = false;
       _lowestPrice = "50";
       _partySize = "10";
@@ -104,7 +107,10 @@ namespace LostArkAuctionHelper
       _activePartySize = 4;
       _activePartyOption = 0;
 
+      BiasCommand = new RelayCommand(o => Bias = int.Parse(o.ToString()));
+
       DataContext = this;
+
       InitializeComponent();
 
       TryCalculate();
@@ -143,8 +149,7 @@ namespace LostArkAuctionHelper
         return;
       }
 
-      if (!_lowestPrice.TryParseInt(out var price)
-        || !_bias.TryParseInt(out var bias))
+      if (!_lowestPrice.TryParseInt(out var price))
       {
         return;
       }
@@ -165,7 +170,7 @@ namespace LostArkAuctionHelper
 
         var bidAmount = equalCutPrice - equalCutBidBefore;
 
-        EndPrice = Math.Round(equalCutBidBefore + (bidAmount * (bias / 100d))).ToString();
+        EndPrice = Math.Round(equalCutBidBefore + (bidAmount * (1 - (_bias / 100d)))).ToString();
       }
     }
 

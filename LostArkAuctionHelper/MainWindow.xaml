@@ -26,7 +26,7 @@
             <helpers:PartyOptionBackgroundConverter x:Key="PartyOptionBackgroundConverterTextbox" ActiveColor="{StaticResource GoldBrush}" InactiveColor="{StaticResource DarkPurpleBrush}"/>
             <helpers:PartyOptionToForegroundConverter x:Key="PartyOptionToForegroundConverter"/>
             <helpers:PartyOptionToBorderThicknessConverter x:Key="PartyOptionToBorderThicknessConverterHide" ActiveValue="0" InactiveValue="2"/>
-            
+
             <Style x:Key="DefaultTextBoxStyle" TargetType="{x:Type TextBox}">
                 <Setter Property="Background" Value="{StaticResource DarkPurpleBrush}"/>
                 <Setter Property="Foreground" Value="{StaticResource GoldBrush}"/>
@@ -155,6 +155,10 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="BiasButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PartySizeButton}">
+                <Setter Property="Margin" Value="1"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Border Background="{StaticResource LightPurpleBrush}" CornerRadius="10">
@@ -193,25 +197,90 @@
                         Click="Button_Click"/>
             </StackPanel>
 
-            <Label Grid.Column="0" Grid.Row="1" 
-                   Content="Bias" 
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center"
-                   Foreground="{StaticResource GoldBrush}"/>
+            <StackPanel Grid.Column="0" Grid.Row="1"
+                        VerticalAlignment="Center" HorizontalAlignment="Right" 
+                        Orientation="Horizontal">
+                <Button BorderThickness="0" 
+                        Background="{StaticResource GoldBrush}"
+                        Foreground="{StaticResource DarkPurpleBrush}"
+                        Content="i"
+                        FontSize="20"
+                        IsEnabled="False"
+                        Width="25" Height="25"
+                        ToolTipService.InitialShowDelay="0"
+                        ToolTipService.ShowOnDisabled="True">
+                    <Button.ToolTip>
+                        <TextBlock>
+                            <Run Text="Bias" FontWeight="Bold"/>
+                            <LineBreak/>
+                            <Run Text="Bias is used to offset the equal share price in your favor."/>
+                            <LineBreak/>
+                            <Run Text="0 bias is equal share, so if you want that check the box. If the box is ticked the selected bias value doesn't matter."/>
+                            <LineBreak/>
+                            <Run Text="100 is the exact bid before the equal share price, so if someone bids on that you will end up gaining the same amount."/>
+                            <LineBreak/>
+                            <Run Text="The default is 75."/>
+                        </TextBlock>
+                    </Button.ToolTip>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Label Content="Bias"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Foreground="{StaticResource GoldBrush}"/>
+
+            </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1"
                         Orientation="Horizontal">
-                <TextBox Grid.Column="1" Grid.Row="2"
-                         Width="100"
-                         Style="{StaticResource DefaultTextBoxStyle}"
-                         Text="{Binding Bias, UpdateSourceTrigger=PropertyChanged}"
-                         KeyDown="TextBox_KeyDown"
-                         TabIndex="3">
-                    <TextBox.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="7"/>
-                        </Style>
-                    </TextBox.Resources>
-                </TextBox>
+                <Grid Grid.Column="1" Grid.Row="2"
+                      Width="100">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Button Style="{StaticResource BiasButton}"
+                            Content="100"
+                            Command="{Binding BiasCommand}" CommandParameter="100"
+                            BorderThickness="{Binding Bias, Converter={StaticResource PartyOptionToBorderThicknessConverterHide}, ConverterParameter=100}"
+                            Background="{Binding Bias, Converter={StaticResource PartyOptionBackgroundConverterButton}, ConverterParameter=100}"
+                            Foreground="{Binding Bias, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=100}"/>
+                    <Button Grid.Column="1"
+                            Style="{StaticResource BiasButton}"
+                            Content="75"
+                            Command="{Binding BiasCommand}" CommandParameter="75"
+                            BorderThickness="{Binding Bias, Converter={StaticResource PartyOptionToBorderThicknessConverterHide}, ConverterParameter=75}"
+                            Background="{Binding Bias, Converter={StaticResource PartyOptionBackgroundConverterButton}, ConverterParameter=75}"
+                            Foreground="{Binding Bias, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=75}"/>
+                    <Button Grid.Row="1"
+                            Style="{StaticResource BiasButton}"
+                            Content="50"
+                            Command="{Binding BiasCommand}" CommandParameter="50"
+                            BorderThickness="{Binding Bias, Converter={StaticResource PartyOptionToBorderThicknessConverterHide}, ConverterParameter=50}"
+                            Background="{Binding Bias, Converter={StaticResource PartyOptionBackgroundConverterButton}, ConverterParameter=50}"
+                            Foreground="{Binding Bias, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=50}"/>
+                    <Button Grid.Row="1" Grid.Column="1"
+                            Style="{StaticResource BiasButton}" 
+                            Content="25"
+                            Command="{Binding BiasCommand}" CommandParameter="25"
+                            BorderThickness="{Binding Bias, Converter={StaticResource PartyOptionToBorderThicknessConverterHide}, ConverterParameter=25}"
+                            Background="{Binding Bias, Converter={StaticResource PartyOptionBackgroundConverterButton}, ConverterParameter=25}"
+                            Foreground="{Binding Bias, Converter={StaticResource PartyOptionToForegroundConverter}, ConverterParameter=25}"/>
+                </Grid>
                 <Label Margin="5 0 0 0"
                    Content="Equal share" 
                    HorizontalAlignment="Right"
@@ -312,3 +381,20 @@
         </Grid>
     </Border>
 </Window>
+<!--
+    
+<TextBox Grid.Column="1" Grid.Row="2"
+        Width="100"
+        Style="{StaticResource DefaultTextBoxStyle}"
+        Text="{Binding Bias, UpdateSourceTrigger=PropertyChanged}"
+        KeyDown="TextBox       _KeyDown"
+        TabIndex="3">
+    <TextBox.Resources>
+        <Style TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="7"/>
+        </Style>
+    </TextBox.Resources>
+</TextBox>
+
+
+-->

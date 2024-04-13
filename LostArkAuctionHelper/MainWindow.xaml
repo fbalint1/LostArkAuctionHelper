@@ -45,7 +45,6 @@
                 <Setter Property="Foreground" Value="{StaticResource GoldBrush}"/>
                 <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="BorderBrush" Value="{StaticResource GoldBrush}"/>
-                <Setter Property="Content" Value="X"/>
                 <Setter Property="FontSize" Value="15"/>
                 <Setter Property="FontWeight" Value="ExtraBold"/>
                 <Setter Property="FontFamily" Value="Calibri"/>
@@ -61,7 +60,14 @@
                                     BorderThickness="{TemplateBinding BorderThickness}" 
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Grid>
+                                    <Line X1="5.5" Y1="5.5" X2="20.5" Y2="20.5" 
+                                          Stroke="{TemplateBinding Foreground}" StrokeThickness="2"
+                                          StrokeEndLineCap="Round" StrokeStartLineCap="Round"/>
+                                    <Line X1="5.5" Y1="20.5" X2="20.5" Y2="5.5" 
+                                          Stroke="{TemplateBinding Foreground}" StrokeThickness="2"
+                                          StrokeEndLineCap="Round" StrokeStartLineCap="Round"/>
+                                </Grid>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>

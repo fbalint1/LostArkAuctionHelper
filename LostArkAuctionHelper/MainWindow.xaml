@@ -14,6 +14,7 @@
         AllowsTransparency="True"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=PriceTextBox}">
   <Window.Resources>
     <ResourceDictionary>

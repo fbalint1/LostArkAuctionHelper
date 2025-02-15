@@ -97,6 +97,54 @@ namespace LostArkAuctionHelper
       }
     }
 
+    private string _whiteMaterialAmount;
+
+    public string WhiteMaterialAmount
+    {
+      get { return _whiteMaterialAmount; }
+      set
+      {
+        _whiteMaterialAmount = value;
+        RecalculateMaterials();
+      }
+    }
+
+    private string _greenMaterialAmount;
+
+    public string GreenMaterialAmount
+    {
+      get { return _greenMaterialAmount; }
+      set
+      {
+        _greenMaterialAmount = value;
+        RecalculateMaterials();
+      }
+    }
+
+    private string _blueMaterialAmount;
+
+    public string BlueMaterialAmount
+    {
+      get { return _blueMaterialAmount; }
+      set
+      {
+        _blueMaterialAmount = value;
+        RecalculateMaterials();
+      }
+    }
+
+    public int CraftableAmount { get; set; }
+
+    public int WhiteMaterialNeed { get; set; }
+
+    public int GreenMaterialNeed { get; set; }
+
+    public int BlueMaterialNeed { get; set; }
+
+    public string WhiteMaterialConvert { get; set; }
+
+    public string GreenMaterialConvert { get; set; }
+
     public MainWindow()
     {
       _bias = 75;
@@ -174,6 +222,47 @@ namespace LostArkAuctionHelper
       }
     }
 
+    private const int WHITE_NEEDED = 86;
+    private const int GREEN_NEEDED = 45;
+    private const int BLUE_NEEDED = 33;
+
+    private const double TOTAL_CONVERTED_BLUES = 47.08;
+
+    private const double WHITE_CONVERT_RATIO = .08;
+    private const double GREEN_CONVERT_RATIO = .16;
+
+    private void RecalculateMaterials()
+    {
+      var whiteAmount = GetNumericValueFromString(WhiteMaterialAmount);
+      var greenAmount = GetNumericValueFromString(GreenMaterialAmount);
+      var blueAmount = GetNumericValueFromString(BlueMaterialAmount);
+
+      var whiteAsBlue = whiteAmount * WHITE_CONVERT_RATIO;
+      var greenAsBlue = greenAmount * GREEN_CONVERT_RATIO;
+
+      var totalMaterialSum = whiteAsBlue + greenAsBlue + blueAmount;
+      CraftableAmount = (int)Math.Floor(totalMaterialSum / TOTAL_CONVERTED_BLUES);
+
+      WhiteMaterialNeed = CraftableAmount * WHITE_NEEDED;
+      GreenMaterialNeed = CraftableAmount * GREEN_NEEDED;
+      BlueMaterialNeed = CraftableAmount * BLUE_NEEDED;
+
+      var whiteMaterialConvert = (int)Math.Floor((whiteAmount - WhiteMaterialNeed) / 100d);
+      WhiteMaterialConvert = $"{whiteMaterialConvert * 100}({whiteMaterialConvert})";
+
+      var greenMaterialConvert = (int)Math.Floor((greenAmount - GreenMaterialNeed) / 50d);
+      GreenMaterialConvert = $"{greenMaterialConvert * 50}({greenMaterialConvert})";
+
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CraftableAmount)));
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WhiteMaterialNeed)));
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GreenMaterialNeed)));
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BlueMaterialNeed)));
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WhiteMaterialConvert)));
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GreenMaterialConvert)));
+    }
+
+    private int GetNumericValueFromString(string value_) => int.TryParse(value_, out int intVal) ? intVal : 0;
+
     private void TextBox_KeyDown(object sender, KeyEventArgs e)
     {
       var keyCode = (int)e.Key;
@@ -239,5 +328,9 @@ namespace LostArkAuctionHelper
         ActivePartyOption = 2;
       }
     }
+
+    private void GreenMaterialConvert_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(GreenMaterialConvert);
+
+    private void WhiteMaterialConvert_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(WhiteMaterialConvert);
   }
 }

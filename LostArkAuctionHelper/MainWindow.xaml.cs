@@ -231,6 +231,9 @@ namespace LostArkAuctionHelper
     private const double WHITE_CONVERT_RATIO = .08;
     private const double GREEN_CONVERT_RATIO = .16;
 
+    private int _whiteMaterialConvertNum;
+    private int _greenMaterialConvertNum;
+
     private void RecalculateMaterials()
     {
       var whiteAmount = GetNumericValueFromString(WhiteMaterialAmount);
@@ -247,11 +250,11 @@ namespace LostArkAuctionHelper
       GreenMaterialNeed = CraftableAmount * GREEN_NEEDED;
       BlueMaterialNeed = CraftableAmount * BLUE_NEEDED;
 
-      var whiteMaterialConvert = (int)Math.Floor((whiteAmount - WhiteMaterialNeed) / 100d);
-      WhiteMaterialConvert = $"{whiteMaterialConvert * 100}({whiteMaterialConvert})";
+      _whiteMaterialConvertNum = (int)Math.Floor((whiteAmount - WhiteMaterialNeed) / 100d);
+      WhiteMaterialConvert = $"{_whiteMaterialConvertNum * 100}({_whiteMaterialConvertNum})";
 
-      var greenMaterialConvert = (int)Math.Floor((greenAmount - GreenMaterialNeed) / 50d);
-      GreenMaterialConvert = $"{greenMaterialConvert * 50}({greenMaterialConvert})";
+      _greenMaterialConvertNum = (int)Math.Floor((greenAmount - GreenMaterialNeed) / 50d);
+      GreenMaterialConvert = $"{_greenMaterialConvertNum * 50}({_greenMaterialConvertNum})";
 
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CraftableAmount)));
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WhiteMaterialNeed)));
@@ -329,8 +332,8 @@ namespace LostArkAuctionHelper
       }
     }
 
-    private void GreenMaterialConvert_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(GreenMaterialConvert);
+    private void GreenMaterialConvert_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(_greenMaterialConvertNum.ToString());
 
-    private void WhiteMaterialConvert_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(WhiteMaterialConvert);
+    private void WhiteMaterialConvert_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClipboardUtil.WriteToClipboard(_whiteMaterialConvertNum.ToString());
   }
 }

@@ -1,12 +1,10 @@
-﻿using LostArkAuctionHelper.Helpers;
-using System;
+﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using LostArkAuctionHelper.Helpers;
 
 namespace LostArkAuctionHelper
 {
@@ -222,9 +220,9 @@ namespace LostArkAuctionHelper
       }
     }
 
-    private const int WHITE_NEEDED = 86;
-    private const int GREEN_NEEDED = 45;
-    private const int BLUE_NEEDED = 33;
+    private const int WHITE_NEEDED = 112;
+    private const int GREEN_NEEDED = 59;
+    private const int BLUE_NEEDED = 43;
 
     private const double TOTAL_CONVERTED_BLUES = 47.08;
 

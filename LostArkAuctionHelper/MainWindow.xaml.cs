@@ -224,7 +224,7 @@ namespace LostArkAuctionHelper
     private const int GREEN_NEEDED = 59;
     private const int BLUE_NEEDED = 43;
 
-    private const double TOTAL_CONVERTED_BLUES = 47.08;
+    private const double TOTAL_CONVERTED_BLUES = 51.96;
 
     private const double WHITE_CONVERT_RATIO = .08;
     private const double GREEN_CONVERT_RATIO = .16;
@@ -238,6 +238,11 @@ namespace LostArkAuctionHelper
       var greenAmount = GetNumericValueFromString(GreenMaterialAmount);
       var blueAmount = GetNumericValueFromString(BlueMaterialAmount);
 
+      if (whiteAmount == 0 || greenAmount == 0)
+      {
+        return;
+      }
+
       var whiteAsBlue = whiteAmount * WHITE_CONVERT_RATIO;
       var greenAsBlue = greenAmount * GREEN_CONVERT_RATIO;
 
@@ -249,10 +254,27 @@ namespace LostArkAuctionHelper
       BlueMaterialNeed = CraftableAmount * BLUE_NEEDED;
 
       _whiteMaterialConvertNum = (int)Math.Floor((whiteAmount - WhiteMaterialNeed) / 100d);
-      WhiteMaterialConvert = $"{_whiteMaterialConvertNum * 100}({_whiteMaterialConvertNum})";
 
+      if (_whiteMaterialConvertNum < 0)
+      {
+        _whiteMaterialConvertNum = 0;
+        CraftableAmount = 0;
+      }
+      else
+      {
+        WhiteMaterialConvert = $"{_whiteMaterialConvertNum * 100}({_whiteMaterialConvertNum})";
+      }
       _greenMaterialConvertNum = (int)Math.Floor((greenAmount - GreenMaterialNeed) / 50d);
-      GreenMaterialConvert = $"{_greenMaterialConvertNum * 50}({_greenMaterialConvertNum})";
+
+      if (_greenMaterialConvertNum < 0)
+      {
+        _greenMaterialConvertNum = 0;
+        CraftableAmount = 0;
+      }
+      else
+      {
+        GreenMaterialConvert = $"{_greenMaterialConvertNum * 50}({_greenMaterialConvertNum})";
+      }
 
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CraftableAmount)));
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WhiteMaterialNeed)));

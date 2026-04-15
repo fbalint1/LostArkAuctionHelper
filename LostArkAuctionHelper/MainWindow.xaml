@@ -640,6 +640,8 @@
         <Label Grid.Column="1" Grid.Row="1"
                Content="{Binding WhiteMaterialConvert}"
                MouseLeftButtonDown="WhiteMaterialConvert_MouseLeftButtonDown"
+               Cursor="Hand"
+               ToolTip="Click to copy convert amount." ToolTipService.InitialShowDelay="100"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Foreground="{StaticResource GoldBrush}"/>
@@ -647,6 +649,8 @@
         <Label Grid.Column="1" Grid.Row="2"
                Content="{Binding GreenMaterialConvert}"
                MouseLeftButtonDown="GreenMaterialConvert_MouseLeftButtonDown"
+               Cursor="Hand"
+               ToolTip="Click to copy convert amount." ToolTipService.InitialShowDelay="100"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Foreground="{StaticResource GoldBrush}"/>

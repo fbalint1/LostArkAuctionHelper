@@ -224,8 +224,9 @@ namespace LostArkAuctionHelper
     private const int GREEN_NEEDED = 59;
     private const int BLUE_NEEDED = 43;
 
-    private const double TOTAL_CONVERTED_BLUES = 51.96;
-
+    private const double TOTAL_CONVERTED_BLUES = 61.4;
+    // 100 -> 8 blues, 50 -> 8 blues
+    // so 1 white -> .08 blues, 1 green -> .16 blues
     private const double WHITE_CONVERT_RATIO = .08;
     private const double GREEN_CONVERT_RATIO = .16;
 

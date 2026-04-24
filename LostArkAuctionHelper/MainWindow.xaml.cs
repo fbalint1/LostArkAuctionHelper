@@ -251,30 +251,53 @@ namespace LostArkAuctionHelper
       CraftableAmount = (int)Math.Floor(totalMaterialSum / TOTAL_CONVERTED_BLUES);
 
       WhiteMaterialNeed = CraftableAmount * WHITE_NEEDED;
+      if (WhiteMaterialNeed > whiteAmount)
+      {
+        CraftableAmount = (int)Math.Floor(whiteAmount / (double)WHITE_NEEDED);
+        WhiteMaterialNeed = CraftableAmount * WHITE_NEEDED;
+      }
+
       GreenMaterialNeed = CraftableAmount * GREEN_NEEDED;
+      if (GreenMaterialNeed > greenAmount)
+      {
+        CraftableAmount = (int)Math.Floor(greenAmount / (double)GREEN_NEEDED);
+        WhiteMaterialNeed = CraftableAmount * WHITE_NEEDED;
+        GreenMaterialNeed = CraftableAmount * GREEN_NEEDED;
+      }
+
       BlueMaterialNeed = CraftableAmount * BLUE_NEEDED;
 
-      _whiteMaterialConvertNum = (int)Math.Floor((whiteAmount - WhiteMaterialNeed) / 100d);
+      if (BlueMaterialNeed > blueAmount)
+      {
+        var blueDifference = FindNextIntDivisibleByTen(BlueMaterialNeed - blueAmount);
+        var notNeededWhite = whiteAmount - WhiteMaterialNeed;
 
-      if (_whiteMaterialConvertNum < 0)
+        var blueDifferenceInWhite = FindNextIntDivisibleByHundred(blueDifference * 12.5d);
+        if (blueDifferenceInWhite < notNeededWhite)
+        {
+          _whiteMaterialConvertNum = blueDifferenceInWhite / 100;
+          WhiteMaterialConvert = $"{blueDifferenceInWhite}({_whiteMaterialConvertNum})";
+          _greenMaterialConvertNum = 0;
+          GreenMaterialConvert = "-";
+        }
+        else
+        {
+          _whiteMaterialConvertNum = (int)Math.Floor(notNeededWhite / 100d);
+          WhiteMaterialConvert = $"{_whiteMaterialConvertNum * 100}({_whiteMaterialConvertNum})";
+
+          var dustFromWhite = _whiteMaterialConvertNum * WHITE_CONVERT_RATIO;
+          var dustNeededFromGreen = (blueDifference * 10) - dustFromWhite;
+
+          _greenMaterialConvertNum = (int)Math.Ceiling(dustNeededFromGreen / 80d);
+          GreenMaterialConvert = $"{_greenMaterialConvertNum * 50}({_greenMaterialConvertNum})";
+        }
+      }
+      else
       {
         _whiteMaterialConvertNum = 0;
-        CraftableAmount = 0;
-      }
-      else
-      {
-        WhiteMaterialConvert = $"{_whiteMaterialConvertNum * 100}({_whiteMaterialConvertNum})";
-      }
-      _greenMaterialConvertNum = (int)Math.Floor((greenAmount - GreenMaterialNeed) / 50d);
-
-      if (_greenMaterialConvertNum < 0)
-      {
         _greenMaterialConvertNum = 0;
-        CraftableAmount = 0;
-      }
-      else
-      {
-        GreenMaterialConvert = $"{_greenMaterialConvertNum * 50}({_greenMaterialConvertNum})";
+        WhiteMaterialConvert = "-";
+        GreenMaterialConvert = "-";
       }
 
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CraftableAmount)));
@@ -286,6 +309,10 @@ namespace LostArkAuctionHelper
     }
 
     private int GetNumericValueFromString(string value_) => int.TryParse(value_, out int intVal) ? intVal : 0;
+
+    private int FindNextIntDivisibleByTen(int value_) => (int)(Math.Ceiling(value_ / 10d) * 10);
+
+    private int FindNextIntDivisibleByHundred(double value_) => (int)(Math.Ceiling(value_ / 100d) * 100);
 
     private void TextBox_KeyDown(object sender, KeyEventArgs e)
     {
